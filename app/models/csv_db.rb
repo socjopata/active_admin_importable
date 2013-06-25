@@ -1,9 +1,10 @@
 require 'csv'
 class CsvDb
   class << self
-    def convert_save(target_model, csv_data, &block)
+    def convert_save(target_model, csv_data, options, &block)
       csv_file = csv_data.read
-      CSV.parse(csv_file, :headers => true, header_converters: :symbol ) do |row|
+      _options = options.merge({:headers => true, :header_converters => :symbol})
+      CSV.parse(csv_file, _options) do |row|
         data = row.to_hash
         if data.present?
           if (block_given?)
